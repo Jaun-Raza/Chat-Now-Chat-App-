@@ -9,15 +9,21 @@ const db = getFirestore(app)
 const SendMsg = ({ userData }) => {
 
     const [msg, setMsg] = useState("");
+    const [checkTyp, setTyp] = useState(false);
     const divforScroll = useRef(null)
 
     const handleInput = (e) => {
         setMsg(e.target.value);
+        if (e.target.value) {
+            setTyp(true);
+        } else {
+            setTyp(false);
+        }
     }
 
     const sendMsg = async (e) => {
         e.preventDefault();
-        
+
         setMsg("");
 
         if (msg !== "") {
@@ -28,11 +34,11 @@ const SendMsg = ({ userData }) => {
                 uri: userData.photoURL,
                 createdAt: serverTimestamp()
             })
-        }else {
+        } else {
             alert("Type a message first...")
         }
 
-        divforScroll.current.scrollIntoView({ behavior: "smooth"});
+        divforScroll.current.scrollIntoView({ behavior: "smooth" });
     }
 
 
@@ -40,6 +46,9 @@ const SendMsg = ({ userData }) => {
         <Wrapper>
             <div ref={divforScroll}></div>
             <div className="sendMsg">
+                <h1 className={checkTyp ? 'typing' : ''}>
+                    {checkTyp && `${userData.displayName} is Typing.....`}
+                </h1>
                 <form onSubmit={sendMsg}>
                     <input type="text" onChange={handleInput} value={msg} placeholder='Type a message....' required />
                     <button type='submit'><i className="fa fa-send-o" style={{ fontSize: "33px" }}></i></button>
@@ -78,7 +87,30 @@ const Wrapper = styled.section`
         background-color: #33465c;
     }
 }
+ position: relative;
 
+        h1 {
+            &.typing {
+                color : black;
+                position: absolute;
+                top: -50px; /* Adjust the distance from the top */
+                left: 10px; /* Adjust the horizontal position */
+                @keyframes typingAnimation {
+                    0% {
+                        opacity: 0.5;
+                    }
+                    50% {
+                        opacity: 1;
+                    }
+                    100% {
+                        opacity: 0.5;
+                    }
+                }
+
+                animation: typingAnimation 1s infinite;
+            }
+        }
+}
 `;
 
 export default SendMsg
