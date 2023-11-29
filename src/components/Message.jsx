@@ -11,7 +11,7 @@ const Message = ({ username, text, uri, position }) => {
       <img src={uri} alt="profile-img" />
     </Wrapper> : <Wrapper>
       <img src={uri} alt="profile-img" />
-      <div style={{ backgroundColor: '#33465c', color: 'white' }}>
+      <div style={{ backgroundColor: 'rgb(70 95 124)', color: 'white' }}>
         <span>{username}</span>
         <p>{text}</p>
       </div>
